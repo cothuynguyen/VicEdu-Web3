@@ -17,7 +17,7 @@ export default function Home() {
         <div style={{ position: 'absolute', top: '-10%', right: '-5%', width: '40%', height: '60%', background: 'var(--primary-light)', filter: 'blur(100px)', opacity: 0.2, borderRadius: '50%', zIndex: 0 }} />
         <div style={{ position: 'absolute', bottom: '-10%', left: '-5%', width: '30%', height: '50%', background: 'var(--secondary-light)', filter: 'blur(100px)', opacity: 0.2, borderRadius: '50%', zIndex: 0 }} />
         
-        <div className="container" style={{ position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'center' }}>
+        <div className="container hero-grid" style={{ position: 'relative', zIndex: 1 }}>
           <div className="animate-fade-in">
             <div style={{ display: 'inline-block', padding: '8px 16px', background: 'rgba(21, 94, 239, 0.1)', color: 'var(--primary)', borderRadius: '20px', fontWeight: 600, fontSize: '0.9rem', marginBottom: '20px' }}>
               Nơi tốt nhất giúp trẻ phát triển toàn diện cả tiếng Anh và Kỹ năng sống 🌟
@@ -29,7 +29,7 @@ export default function Home() {
             <p style={{ fontSize: '1.2rem', color: 'var(--text-muted)', marginBottom: '30px', maxWidth: '90%' }}>
               Giúp trẻ làm chủ Tiếng Anh, rèn luyện Kỷ luật thép và Kỹ năng sống thế kỷ 21, tự tin bước ra thế giới.
             </p>
-            <div style={{ display: 'flex', gap: '16px' }}>
+            <div className="btn-group" style={{ display: 'flex', gap: '16px' }}>
               <Link href="/tieng-anh-va-ky-nang-song" className="btn btn-primary">
                 Tìm hiểu Chương trình
               </Link>
@@ -59,7 +59,7 @@ export default function Home() {
             Sự kết hợp hoàn hảo giữa đào tạo Học thuật và rèn luyện Nhân cách.
           </p>
           
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '30px' }}>
+          <div className="features-grid">
             {[
               { title: 'Tiếng Anh chuẩn Quốc tế', desc: 'Lộ trình Cambridge bài bản, giúp trẻ tự tin giao tiếp và đạt điểm cao.', icon: Globe },
               { title: 'Rèn luyện Kỷ luật', desc: 'Môi trường huấn luyện kỹ năng sống, giúp trẻ tự lập và bản lĩnh.', icon: Target },

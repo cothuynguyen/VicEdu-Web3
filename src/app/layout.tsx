@@ -21,7 +21,11 @@ export default function RootLayout({
               <img src="/logo.png" alt="VicEdu Logo" style={{ height: '40px', width: 'auto' }} />
               <div>Vic<span>Edu</span></div>
             </Link>
-            <nav>
+            <input type="checkbox" id="mobile-menu-toggle" className="mobile-menu-toggle" />
+            <label htmlFor="mobile-menu-toggle" className="hamburger-icon">
+              <span></span><span></span><span></span>
+            </label>
+            <nav className="nav-container">
               <ul className="nav-menu">
                 <li><Link href="/" className="nav-link">Trang chủ</Link></li>
                 <li><Link href="/tieng-anh-va-ky-nang-song" className="nav-link">Chương trình học</Link></li>
