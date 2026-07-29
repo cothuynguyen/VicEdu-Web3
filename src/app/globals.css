@@ -308,6 +308,18 @@ a:hover {
   display: block;
 }
 
+/* Program Page Classes */
+.program-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+.program-card-panel {
+  padding: 50px;
+  background-color: white;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   /* Fix Typography */
@@ -353,6 +365,10 @@ a:hover {
   /* Layout adjustments */
   .section { padding: 40px 0; }
   .container { padding: 0 15px; }
+  
+  /* Program Page overrides */
+  .program-details-grid { grid-template-columns: 1fr; gap: 30px; }
+  .program-card-panel { padding: 20px; }
   
   /* Button stacking */
   .btn-group { display: flex; flex-direction: column; gap: 10px; }

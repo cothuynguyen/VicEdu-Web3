@@ -150,9 +150,9 @@ export default function ProgramsPage() {
           </div>
 
           {/* Program Details */}
-          <div className="glass-panel animate-fade-in" style={{ padding: '50px', backgroundColor: 'white' }}>
+          <div className="glass-panel animate-fade-in program-card-panel">
             
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', marginBottom: '40px' }}>
+            <div className="program-details-grid">
               {/* Left Col - Overview */}
               <div>
                 <h2 style={{ fontSize: '2.5rem', color: activeProgram.color, marginBottom: '20px' }}>

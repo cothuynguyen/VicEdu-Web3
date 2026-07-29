@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import MobileMenuHandler from '@/components/MobileMenuHandler';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body>
+        <MobileMenuHandler />
         <header className="header">
           <div className="container header-inner">
             <Link href="/" className="logo" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
