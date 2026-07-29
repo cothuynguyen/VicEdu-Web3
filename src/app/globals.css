@@ -373,4 +373,7 @@ a:hover {
   /* Button stacking */
   .btn-group { display: flex; flex-direction: column; gap: 10px; }
   .btn-group .btn { width: 100%; }
+  
+  /* Utilities */
+  .hide-on-mobile { display: none !important; }
 }

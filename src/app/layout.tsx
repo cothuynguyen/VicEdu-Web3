@@ -59,7 +59,7 @@ export default function RootLayout({
                   Nơi tốt nhất để trẻ phát triển toàn diện cả Tiếng Anh và Kỹ năng sống. Kiến tạo môi trường giáo dục toàn diện, giúp học sinh phát triển cả tài năng và nhân cách, vươn tầm quốc tế.
                 </p>
               </div>
-              <div>
+              <div className="hide-on-mobile">
                 <h3 className="footer-title">Chương trình</h3>
                 <ul className="footer-links">
                   <li><Link href="#">Tiếng Anh Trẻ em</Link></li>
@@ -68,7 +68,7 @@ export default function RootLayout({
                   <li><Link href="#">Trại hè Quốc tế</Link></li>
                 </ul>
               </div>
-              <div>
+              <div className="hide-on-mobile">
                 <h3 className="footer-title">Liên kết</h3>
                 <ul className="footer-links">
                   <li><Link href="#">Về chúng tôi</Link></li>
