@@ -80,10 +80,10 @@ export default function RootLayout({
               <div>
                 <h3 className="footer-title">Liên hệ</h3>
                 <ul className="footer-links">
-                  <li><Link href="https://hoc.viceduvn.com/vt-dang-ky-tu-van" target="_blank" rel="noopener noreferrer">📍 Chi nhánh Việt Trì</Link></li>
-                  <li><Link href="https://hoc.viceduvn.com/tq-dang-ky-tu-van" target="_blank" rel="noopener noreferrer">📍 Chi nhánh Tuyên Quang</Link></li>
-                  <li><Link href="https://hoc.viceduvn.com/lt-dang-ky-tu-van" target="_blank" rel="noopener noreferrer">📍 Chi nhánh Lâm Thao</Link></li>
-                  <li><Link href="https://hoc.viceduvn.com/dh-dang-ky-tu-van" target="_blank" rel="noopener noreferrer">📍 Chi nhánh Dân Hòa</Link></li>
+                  <li><Link href="https://hoc.viceduvn.com/vt-kns-dang-ky-tu-van" target="_blank" rel="noopener noreferrer">📍 Chi nhánh Việt Trì</Link></li>
+                  <li><Link href="https://hoc.viceduvn.com/tq-kns-dang-ky-tu-van" target="_blank" rel="noopener noreferrer">📍 Chi nhánh Tuyên Quang</Link></li>
+                  <li><Link href="https://hoc.viceduvn.com/lt-kns-dang-ky-tu-van" target="_blank" rel="noopener noreferrer">📍 Chi nhánh Lâm Thao</Link></li>
+                  <li><Link href="https://hoc.viceduvn.com/dh-kns-dang-ky-tu-van" target="_blank" rel="noopener noreferrer">📍 Chi nhánh Dân Hòa</Link></li>
                 </ul>
               </div>
             </div>
