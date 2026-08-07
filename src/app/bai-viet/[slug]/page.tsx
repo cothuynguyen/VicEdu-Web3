@@ -95,11 +95,28 @@ export default async function ArticleDetailPage({
           </div>
         )}
 
-        {/* Nội dung chính (HTML) */}
         <article 
           className="article-content"
           dangerouslySetInnerHTML={{ 
-            __html: article.content ? article.content.replace(/&nbsp;/g, ' ') : '<p>Nội dung đang được cập nhật...</p>' 
+            __html: (() => {
+              if (!article.content) return '<p>Nội dung đang được cập nhật...</p>';
+              let html = article.content.replace(/&nbsp;/g, ' ');
+              // Tự động quét và biến các link YouTube bị lỗi (lưu thành thẻ <a>) trở lại thành khung Video (iframe)
+              html = html.replace(
+                /<a[^>]*href="([^"]*(?:youtube\.com\/embed\/|youtu\.be\/|youtube\.com\/watch\?v=)[^"]+)"[^>]*>.*?<\/a>/gi,
+                (match, url) => {
+                  // Đảm bảo url là dạng embed để hiển thị được trong iframe
+                  let embedUrl = url;
+                  if (url.includes('watch?v=')) {
+                    embedUrl = url.replace('watch?v=', 'embed/');
+                  } else if (url.includes('youtu.be/')) {
+                    embedUrl = url.replace('youtu.be/', 'youtube.com/embed/');
+                  }
+                  return `<iframe style="width: 100%; aspect-ratio: 16/9; border-radius: 12px; margin: 30px 0; display: block; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);" src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                }
+              );
+              return html;
+            })()
           }}
         />
         
