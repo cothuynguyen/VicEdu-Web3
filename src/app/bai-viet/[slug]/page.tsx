@@ -104,7 +104,7 @@ export default async function ArticleDetailPage({
               // Tự động quét và biến các link YouTube bị lỗi (lưu thành thẻ <a>) trở lại thành khung Video (iframe)
               html = html.replace(
                 /<a[^>]*href="([^"]*(?:youtube\.com\/embed\/|youtu\.be\/|youtube\.com\/watch\?v=)[^"]+)"[^>]*>.*?<\/a>/gi,
-                (match, url) => {
+                (match: string, url: string) => {
                   // Đảm bảo url là dạng embed để hiển thị được trong iframe
                   let embedUrl = url;
                   if (url.includes('watch?v=')) {
