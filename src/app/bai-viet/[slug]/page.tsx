@@ -8,6 +8,47 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+export async function generateMetadata({ 
+  params,
+  searchParams
+}: { 
+  params: Promise<{ slug: string }>,
+  searchParams: Promise<{ preview?: string }>
+}) {
+  const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
+  const isPreview = resolvedSearchParams.preview === 'true';
+
+  let query = supabase
+    .from('marketing_articles')
+    .select('title, excerpt, thumbnail_url')
+    .eq('slug', resolvedParams.slug);
+    
+  if (!isPreview) {
+    query = query.eq('status', 'published');
+  }
+  
+  const { data: article } = await query.single();
+  
+  if (!article) {
+    return {
+      title: 'Bài viết không tồn tại - VicEdu',
+      description: 'Không tìm thấy bài viết yêu cầu.'
+    };
+  }
+  
+  return {
+    title: `${article.title} - Hệ thống Giáo dục VicEdu`,
+    description: article.excerpt || 'Đọc bài viết mới nhất từ Hệ thống giáo dục Anh ngữ và Kỹ năng sống VicEdu',
+    openGraph: {
+      title: `${article.title} - Hệ thống Giáo dục VicEdu`,
+      description: article.excerpt || 'Đọc bài viết mới nhất từ Hệ thống giáo dục Anh ngữ và Kỹ năng sống VicEdu',
+      images: article.thumbnail_url ? [{ url: article.thumbnail_url }] : [],
+    }
+  };
+}
+
+
 export default async function ArticleDetailPage({ 
   params,
   searchParams
