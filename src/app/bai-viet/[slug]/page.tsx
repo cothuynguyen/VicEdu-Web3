@@ -156,6 +156,16 @@ export default async function ArticleDetailPage({
                   return `<iframe style="width: 100%; aspect-ratio: 16/9; border-radius: 12px; margin: 30px 0; display: block; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);" src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
                 }
               );
+              
+              // Tự động quét và biến các link Cloudflare Stream (thẻ <a> hoặc <iframe> bị sai) thành khung Video
+              html = html.replace(
+                /<a[^>]*href="([^"]*cloudflarestream\.com\/[a-zA-Z0-9]+)[^"]*"[^>]*>.*?<\/a>|<iframe[^>]*src="([^"]*cloudflarestream\.com\/[a-zA-Z0-9]+)[^"]*"[^>]*>.*?<\/iframe>/gi,
+                (match: string, aUrl: string, iframeUrl: string) => {
+                  const baseUrl = aUrl || iframeUrl;
+                  return `<iframe style="width: 100%; aspect-ratio: 16/9; border-radius: 12px; margin: 30px 0; display: block; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);" src="${baseUrl}/iframe" frameborder="0" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe>`;
+                }
+              );
+              
               return html;
             })()
           }}
