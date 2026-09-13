@@ -166,6 +166,14 @@ export default async function ArticleDetailPage({
                 }
               );
               
+              // Tự động quét và biến các link MP3 (lưu thành thẻ <a>) thành Trình phát nhạc (Audio Player)
+              html = html.replace(
+                /<a[^>]*href="([^"]*\.mp3(?:[?#][^"]*)?)"[^>]*>.*?<\/a>/gi,
+                (match: string, mp3Url: string) => {
+                  return `<div style="margin: 30px 0; padding: 20px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; text-align: center;"><audio controls style="width: 100%; max-width: 500px; outline: none;"><source src="${mp3Url}" type="audio/mpeg">Trình duyệt của bạn không hỗ trợ phát âm thanh.</audio></div>`;
+                }
+              );
+              
               return html;
             })()
           }}
