@@ -8,7 +8,8 @@ const CATEGORIES = [
   'Góc Phụ huynh',
   'Phương pháp Giáo dục',
   'Học thuật',
-  'Định hướng nghề nghiệp'
+  'Định hướng nghề nghiệp',
+  'Âm nhạc'
 ];
 
 export default function ArticleListClient({ initialArticles }: { initialArticles: any[] }) {
