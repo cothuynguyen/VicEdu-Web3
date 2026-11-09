@@ -1,5 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
+import type { Metadata } from 'next';
 import ArticleListClient from './ArticleListClient';
+
+export const metadata: Metadata = {
+  title: 'Tin tức & Sự kiện - Hệ thống Giáo dục VicEdu',
+  alternates: { canonical: '/bai-viet' },
+};
 
 // Kích hoạt tính năng ISR (Tạo trang tĩnh và Cache). 
 // 3600 = Máy chủ Vercel sẽ lấy dữ liệu mới từ Supabase đúng 1 tiếng 1 lần.

@@ -1,78 +1,76 @@
 import { createClient } from '@supabase/supabase-js';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { cache } from 'react';
 import ViewCounter from './ViewCounter';
+import { isValidPreview, createPreviewClient } from '@/lib/preview';
 
 // Kết nối Supabase Server-side (không dùng 'use client' để tối ưu SEO)
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-export async function generateMetadata({ 
-  params,
-  searchParams
-}: { 
+type PageProps = {
   params: Promise<{ slug: string }>,
-  searchParams: Promise<{ preview?: string }>
-}) {
-  const resolvedParams = await params;
-  const resolvedSearchParams = await searchParams;
-  const isPreview = resolvedSearchParams.preview === 'true';
+  searchParams: Promise<{ preview?: string; exp?: string; sig?: string }>
+};
 
-  let query = supabase
-    .from('marketing_articles')
-    .select('title, excerpt, thumbnail_url')
-    .eq('slug', resolvedParams.slug);
-    
+// Chế độ Xem trước chỉ bật khi link có chữ ký hợp lệ từ Web 1 (xem src/lib/preview.ts).
+// Link cũ dạng ?preview=true không còn mở được bài nháp.
+async function resolvePreview(props: PageProps) {
+  const { slug } = await props.params;
+  const sp = await props.searchParams;
+  return { slug, isPreview: isValidPreview(slug, sp) };
+}
+
+// cache(): generateMetadata và trang dùng chung 1 lần gọi DB cho mỗi request.
+const getArticle = cache(async (slug: string, isPreview: boolean) => {
+  const client = isPreview ? createPreviewClient() : supabase;
+  if (!client) return null;
+  let query = client.from('marketing_articles').select('*').eq('slug', slug);
   if (!isPreview) {
-    query = query.eq('status', 'published');
+    query = query.eq('status', 'published'); // Chỉ lấy bài đã xuất bản nếu không phải xem trước
   }
-  
-  const { data: article } = await query.single();
-  
+  const { data } = await query.single();
+  return data;
+});
+
+export async function generateMetadata(props: PageProps) {
+  const { slug, isPreview } = await resolvePreview(props);
+  const article = await getArticle(slug, isPreview);
+
   if (!article) {
     return {
       title: 'Bài viết không tồn tại - VicEdu',
-      description: 'Không tìm thấy bài viết yêu cầu.'
+      description: 'Không tìm thấy bài viết yêu cầu.',
+      robots: { index: false, follow: false },
     };
   }
-  
+
+  const title = `${article.title} - Hệ thống Giáo dục VicEdu`;
+  const description = article.excerpt || 'Đọc bài viết mới nhất từ Hệ thống giáo dục Anh ngữ và Kỹ năng sống VicEdu';
   return {
-    title: `${article.title} - Hệ thống Giáo dục VicEdu`,
-    description: article.excerpt || 'Đọc bài viết mới nhất từ Hệ thống giáo dục Anh ngữ và Kỹ năng sống VicEdu',
+    title: isPreview ? `[XEM TRƯỚC] ${title}` : title,
+    description,
+    alternates: { canonical: `/bai-viet/${article.slug}` },
+    // Bản xem trước (có thể là bài nháp) tuyệt đối không cho Google lập chỉ mục
+    robots: isPreview ? { index: false, follow: false } : undefined,
     openGraph: {
-      title: `${article.title} - Hệ thống Giáo dục VicEdu`,
-      description: article.excerpt || 'Đọc bài viết mới nhất từ Hệ thống giáo dục Anh ngữ và Kỹ năng sống VicEdu',
+      title,
+      description,
+      type: 'article',
+      url: `/bai-viet/${article.slug}`,
       images: article.thumbnail_url ? [{ url: article.thumbnail_url }] : [],
     }
   };
 }
 
 
-export default async function ArticleDetailPage({ 
-  params,
-  searchParams
-}: { 
-  params: Promise<{ slug: string }>,
-  searchParams: Promise<{ preview?: string }>
-}) {
-  const resolvedParams = await params;
-  const resolvedSearchParams = await searchParams;
-  const isPreview = resolvedSearchParams.preview === 'true';
-  
-  // Gọi DB lấy bài viết dựa theo đường dẫn (slug)
-  let query = supabase
-    .from('marketing_articles')
-    .select('*')
-    .eq('slug', resolvedParams.slug);
-    
-  if (!isPreview) {
-    query = query.eq('status', 'published'); // Đảm bảo chỉ lấy bài đã xuất bản nếu không phải xem trước
-  }
-  
-  const { data: article, error } = await query.single();
+export default async function ArticleDetailPage(props: PageProps) {
+  const { slug, isPreview } = await resolvePreview(props);
+  const article = await getArticle(slug, isPreview);
 
-  if (error || !article) {
+  if (!article) {
     notFound(); // Trả về trang 404 nếu không tìm thấy
   }
 
@@ -93,11 +91,16 @@ export default async function ArticleDetailPage({
   return (
     <>
       {!isPreview && <ViewCounter slug={article.slug} />}
-      {article.facebook_pixel_id && (
+      {!isPreview && article.facebook_pixel_id && (
         <script dangerouslySetInnerHTML={{ __html: fbPixelCode }} />
       )}
+      {isPreview && (
+        <div style={{ background: '#fef3c7', color: '#92400e', borderBottom: '1px solid #fcd34d', padding: '10px 20px', textAlign: 'center', fontWeight: 600 }}>
+          👁️ Chế độ XEM TRƯỚC: {article.status === 'published' ? 'bài đã xuất bản' : 'bài NHÁP, khách chưa xem được'} · Link hết hạn sau 1 giờ
+        </div>
+      )}
       <div className="container" style={{ padding: '60px 20px', maxWidth: '800px', margin: '0 auto' }}>
-        
+
         {/* Breadcrumb / Nút quay lại */}
         <div style={{ marginBottom: '30px' }}>
           <Link href="/bai-viet" style={{ color: 'var(--primary)', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '8px' }}>

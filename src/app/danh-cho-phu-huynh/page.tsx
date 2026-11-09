@@ -1,3 +1,10 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Góc Phụ huynh - Hệ thống Giáo dục VicEdu',
+  alternates: { canonical: '/danh-cho-phu-huynh' },
+};
+
 export default function ParentsPage() {
   return (
     <div className="container" style={{ padding: '80px 20px', textAlign: 'center' }}>

@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import MobileMenuHandler from '@/components/MobileMenuHandler';
+import { SITE_URL } from '@/lib/site';
 import './globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: 'Hệ thống Anh ngữ Quốc tế & Kỹ năng sống VicEdu',
   description: 'Trang bị kỹ năng Tiếng Anh chuẩn Quốc tế và Kỹ năng sống thế kỷ 21 cho thế hệ trẻ Việt Nam.',
+  openGraph: { siteName: 'VicEdu', locale: 'vi_VN', type: 'website' },
 };
 
 export default function RootLayout({
