@@ -9,6 +9,7 @@ const CATEGORIES = [
   'Phương pháp Giáo dục',
   'Học thuật',
   'Định hướng nghề nghiệp',
+  'NLP',
   'Âm nhạc'
 ];
 
